@@ -12,7 +12,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-// ---------- Utility Helpers ----------
+app.get('/', (req, res) => res.send('Admin Management Server is Running'));
+
 const getFilePath = (file) => path.join(__dirname, 'data', file);
 
 const readJSON = (file) => {
@@ -26,7 +27,6 @@ const readJSON = (file) => {
 const writeJSON = (file, data) =>
     fs.writeFileSync(getFilePath(file), JSON.stringify(data, null, 2));
 
-// ---------- Generic CRUD Route Helper ----------
 const setupCRUDRoutes = (resource, filename) => {
     app.get(`/api/${resource}`, (req, res) => {
         res.json(readJSON(filename));
@@ -44,7 +44,7 @@ const setupCRUDRoutes = (resource, filename) => {
         const data = readJSON(filename);
         const index = data.findIndex((item) => item.id === req.params.id);
         if (index !== -1) {
-            data[index] = {...data[index], ...req.body };
+            data[index] = { ...data[index], ...req.body };
             writeJSON(filename, data);
             res.json(data[index]);
         } else {
@@ -60,147 +60,59 @@ const setupCRUDRoutes = (resource, filename) => {
     });
 };
 
-// ---------- Setup Routes ----------
+// Setup CRUD routes
 setupCRUDRoutes('patients', 'patients.json');
 setupCRUDRoutes('doctors', 'doctors.json');
 setupCRUDRoutes('services', 'services.json');
 setupCRUDRoutes('medicines', 'medicines.json');
 
-// ---------- Financial Reports ----------
+// Finances (separate route)
 app.get('/api/finances', (req, res) => {
     res.json(readJSON('finances.json'));
 });
 
-// ---------- Billing PDF Export ----------
+// Billing PDF Generator
 app.post('/api/generate-bill', (req, res) => {
-    const data = req.body;
-    const doc = new PDFDocument({ margin: 50 });
-    const filename = `invoice_${Date.now()}.pdf`;
+    try {
+        const data = req.body;
+        const doc = new PDFDocument({ margin: 50 });
+        const filename = `invoice_${Date.now()}.pdf`;
 
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
-    doc.pipe(res);
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
+        doc.pipe(res);
 
-    const pageWidth = doc.page.width;
-    const pageHeight = doc.page.height;
-    const logoPath = path.join(__dirname, 'public', 'logo.png');
+        const pageWidth = doc.page.width;
+        const logoPath = path.join(__dirname, 'public', 'logo.png');
 
-    // ====== HEADER ======
-    doc
-        .rect(0, 0, pageWidth, 60)
-        .fill('#E0F7FA');
+        doc.rect(0, 0, pageWidth, 60).fill('#E0F7FA');
 
-    if (fs.existsSync(logoPath)) {
-        doc.image(logoPath, 20, 10, { width: 40, height: 40 });
-    }
+        if (fs.existsSync(logoPath)) {
+            doc.image(logoPath, 20, 10, { width: 40, height: 40 });
+        }
 
-    doc
-        .fillColor('#00695C')
-        .fontSize(20)
-        .text('Sadri Health Services', 70, 20, {
-            align: 'center'
+        doc.fillColor('#00695C').fontSize(20).text('Sadri Clinic', 70, 20);
+
+        doc.moveDown().fontSize(12).fillColor('black');
+        doc.text(`Patient: ${data.patient}`);
+        doc.text(`Doctor: ${data.doctor}`);
+        doc.text(`Date: ${new Date().toLocaleDateString()}`);
+
+        doc.moveDown().text("Items:");
+        data.items.forEach((item, index) => {
+            doc.text(`${index + 1}. ${item.name} - Rs. ${item.amount}`);
         });
 
-    doc
-        .moveTo(0, 60)
-        .lineTo(pageWidth, 60)
-        .strokeColor('#B2DFDB')
-        .stroke();
+        const total = data.items.reduce((sum, item) => sum + Number(item.amount), 0);
+        doc.moveDown().text(`Total Amount: Rs. ${total}`);
+        doc.text("Thank you for visiting Sadri Clinic!");
 
-    doc.moveDown(3);
-
-    // ====== WATERMARK ======
-    if (fs.existsSync(logoPath)) {
-        doc
-            .opacity(0.08)
-            .image(logoPath, pageWidth / 4, pageHeight / 4, {
-                width: 300,
-                height: 300
-            })
-            .opacity(1);
+        doc.end();
+    } catch (err) {
+        res.status(500).json({ error: "Failed to generate PDF" });
     }
-
-    // ====== BILL DETAILS ======
-    doc
-        .fillColor('blue')
-        .fontSize(18)
-        .text('Invoice', { align: 'center' });
-
-    doc.moveDown();
-    doc.fillColor('black').fontSize(14);
-    doc.text(`Patient: ${data.patient}`);
-    doc.text(`Doctor: ${data.doctor}`);
-    doc.text(`Date: ${new Date().toLocaleDateString()}`);
-
-    doc.moveDown().fontSize(16).fillColor('#333').text(' ', { underline: true });
-    doc.moveDown(0.5);
-
-    // Table Header
-    const tableTop = doc.y;
-    const itemX = 70;
-    const typeX = 300;
-    const priceX = 430;
-
-    doc
-        .fontSize(12)
-        .fillColor('#00695C')
-        .text('Services / Medicines', itemX, tableTop)
-        .text('Price (PKR)', priceX, tableTop);
-
-    doc
-        .strokeColor('#ccc')
-        .moveTo(itemX, doc.y + 2)
-        .lineTo(540, doc.y + 2)
-        .stroke();
-
-    doc.moveDown(0.5);
-    doc.fontSize(12).fillColor('black');
-
-    data.items.forEach(item => {
-        const y = doc.y;
-        doc.text(item.name, itemX, y);
-        doc.text(item.type, typeX, y);
-        doc.text(item.price, priceX, y);
-        doc.moveDown();
-    });
-
-    doc
-        .fillColor('green')
-        .fontSize(14)
-        .text(`Total: ${data.total} PKR`, { align: 'right' });
-
-    const footerY = doc.page.height - 110;
-
-    doc
-        .fillColor("#444")
-        .fontSize(10)
-        .text("Address: 13-14, 1st Floor, Capital Trade Center, F-10 Markaz, Islamabad, Pakistan", 50, footerY, {
-            align: 'center',
-            width: pageWidth - 100
-        })
-        .text("Phone: +92 333 6202688     Email: sadrismc@gmail.com", {
-            align: 'center',
-            width: pageWidth - 100
-        })
-        .fillColor("blue")
-        .text("Website: www.sadri.info", {
-            align: 'center',
-            link: 'http://www.sadri.info',
-            underline: true,
-            width: pageWidth - 100
-        });
-
-    doc.end();
-
-    const finances = readJSON('finances.json');
-    finances.push({
-        date: new Date().toISOString(),
-        type: 'earning',
-        amount: data.total
-    });
-    writeJSON('finances.json', finances);
 });
 
 app.listen(port, () => {
-    console.log(`✅ Server running on port ${port}`);
+    console.log(`Server running on port ${port}`);
 });
