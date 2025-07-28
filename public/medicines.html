@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Medicines</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h2>Manage Medicines</h2>
+
+    <input type="text" id="searchMedicine" placeholder="Search medicine or category..." />
+
+    <form id="medicineForm">
+        <input type="hidden" name="id" />
+        <input type="text" placeholder="Medicine Name" name="name" required />
+        <input type="number" placeholder="Price (PKR)" name="price" required />
+        <input type="text" placeholder="Category (e.g., oral, skin)" name="category" />
+        <button type="submit">Save Medicine</button>
+    </form>
+
+    <div id="medicineList" class="card-grid"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

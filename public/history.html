@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Patients History</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <h2>Patient History</h2>
+
+    <input type="text" id="historySearch" placeholder="Search by patient, doctor, service, medicine, date..." />
+    <button onclick="exportHistoryPDF()">📤 Export to PDF</button>
+
+    <div id="historyList" class="card-grid"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

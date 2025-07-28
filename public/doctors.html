@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Doctors</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h2>Manage Doctors</h2>
+
+    <input type="text" id="searchDoctor" placeholder="Search doctor..." />
+
+    <form id="doctorForm">
+        <input type="hidden" name="id" />
+        <input type="text" placeholder="Doctor Name" name="name" required />
+        <input type="text" placeholder="Specialty" name="specialty" />
+        <button type="submit">Save Doctor</button>
+    </form>
+
+    <div id="doctorList" class="card-grid"></div>
+
+    <script src="script.js"></script>
+</body>
+
+
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Patients</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h2>Manage Patients</h2>
+
+    <input type="text" id="searchPatient" placeholder="Search by name, doctor, service..." />
+
+    <form id="patientForm">
+        <input type="hidden" name="id" />
+        <input type="text" placeholder="Name" name="name" required />
+        <input type="number" placeholder="Age" name="age" required />
+        <input type="text" placeholder="Phone Number" name="phone" required />
+        <input type="text" placeholder="Doctor" name="doctor" required />
+        <input type="text" placeholder="Services (comma separated)" name="services" />
+        <input type="text" placeholder="Medicines (comma separated)" name="medicines" />
+        <button type="submit">Save Patient</button>
+    </form>
+
+    <div id="patientList" class="card-grid"></div>
+
+    <script src="script.js"></script>
+</body>
+
+
+</html>

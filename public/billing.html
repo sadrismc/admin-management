@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Billing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h2>Generate Bill</h2>
+    <form id="billingForm">
+        <input type="text" placeholder="Patient Name" name="patient" required />
+        <input type="text" placeholder="Doctor" name="doctor" required />
+        <input type="text" placeholder="Item:Price (For More Items Use Commas)" name="items" required />
+        <input type="number" placeholder="Total Amount" name="total" required />
+        <button type="submit">Generate PDF</button>
+    </form>
+    <script src="script.js"></script>
+
+</body>
+
+</html>

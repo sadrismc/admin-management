@@ -1,0 +1,45 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f5f5f5;
+}
+
+header {
+    background-color: #2f80ed;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.card {
+    background: white;
+    padding: 30px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.card:hover {
+    background: #2f80ed;
+    color: white;
+}
+
+.tag {
+    display: inline-block;
+    background: #2f80ed;
+    color: white;
+    padding: 3px 10px;
+    border-radius: 10px;
+    margin: 2px;
+    font-size: 0.8rem;
+}

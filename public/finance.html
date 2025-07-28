@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Finance Reports</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <h2>Finance Summary</h2>
+
+    <div>
+        <label>From: <input type="date" id="fromDate" /></label>
+        <label>To: <input type="date" id="toDate" /></label>
+        <button onclick="filterFinance()">📊 Generate Report</button>
+        <button onclick="exportFinancePDF()">📤 Export PDF</button>
+    </div>
+
+    <div id="financeReport" class="report-box"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Services</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h2>Manage Services</h2>
+
+    <input type="text" id="searchService" placeholder="Search service or category..." />
+
+    <form id="serviceForm">
+        <input type="hidden" name="id" />
+        <input type="text" placeholder="Service Name" name="name" required />
+        <input type="number" placeholder="Price (PKR)" name="price" required />
+        <input type="text" placeholder="Category (e.g., facial, laser)" name="category" />
+        <button type="submit">Save Service</button>
+    </form>
+
+    <div id="serviceList" class="card-grid"></div>
+
+    <script src="script.js"></script>
+</body>
+
+
+</html>

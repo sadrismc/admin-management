@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Sadri Health Services-Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="style2.css" />
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="nav-left">
+            <img src="logo.png" alt="Clinic Logo" class="logo" />
+            <span class="brand-name">Sadri Health Services</span>
+        </div>
+
+        <!-- Mobile Toggle -->
+        <div class="nav-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="nav-links" id="navLinks">
+            <a href="patients.html">Patients</a>
+            <a href="doctors.html">Doctors</a>
+            <a href="services.html">Services</a>
+            <a href="medicines.html">Medicines</a>
+            <a href="billing.html">Billing</a>
+            <a href="history.html">Patients History</a>
+            <a href="reports.html">Reports</a>
+            <a href="finance.html">Finance</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Dashboard Overview</h2>
+
+        <!-- HORIZONTAL CARD CONTAINER -->
+        <div class="dashboard-strip">
+            <div class="metric-box">
+                <i class="fas fa-user-injured"></i>
+                <div>
+                    <p>Patients</p>
+                    <strong id="totalPatients">0</strong>
+                </div>
+            </div>
+            <div class="metric-box">
+                <i class="fas fa-user-md"></i>
+                <div>
+                    <p>Doctors</p>
+                    <strong id="totalDoctors">0</strong>
+                </div>
+            </div>
+            <div class="metric-box">
+                <i class="fas fa-pills"></i>
+                <div>
+                    <p>Medicines</p>
+                    <strong id="totalMedicines">0</strong>
+                </div>
+            </div>
+            <div class="metric-box">
+                <i class="fas fa-hand-holding-medical"></i>
+                <div>
+                    <p>Services</p>
+                    <strong id="totalServices">0</strong>
+                </div>
+            </div>
+            <div class="metric-box">
+                <i class="fas fa-wallet"></i>
+                <div>
+                    <p>Earnings</p>
+                    <strong id="totalEarnings">PKR 0</strong>
+                </div>
+            </div>
+        </div>
+        <br>
+        <center>
+            <a href="https://sadri.info/public/admin.html" target="_blank" class="card-button">
+                <div class="card-button-content">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Online Booking Checker</span>
+                </div>
+            </a>
+        </center>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>&copy; Sadri Health Services. All rights reserved.</p>
+    </footer>
+
+    <script src="script1.js"></script>
+
+    <script>
+        // Mobile nav toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+        });
+    </script>
+
+</body>
+
+</html>
